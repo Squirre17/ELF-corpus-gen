@@ -12,6 +12,7 @@ pub:
     } buf_t;
 
     ELFBase() = default;
+    ~ELFBase();
     buf_t buf;
 
     void set_hdr();
@@ -50,7 +51,6 @@ priv:
 class ELFSlave : pub ELFBase {
 pub:
 
-    buf_t buf;
     ELFSlave(ELF& origin);
     ~ELFSlave();    
 priv:
