@@ -1,5 +1,6 @@
 #include "elf.hpp"
 
+
 u16 ELFBase::num_of_seg() {
     return self.ehdr->e_phnum;
 }
@@ -17,6 +18,8 @@ void ELFBase::set_hdr() {
 /* -------------------------------------------------------- */
 ELF::fmap_t::fmap_t(Fd fd, u8* base, usize size) 
     : fd(fd) ,base(base) ,size(size) {}
+
+ELF::~ELF(){};
 
 ELF::ELF(string name) {
 

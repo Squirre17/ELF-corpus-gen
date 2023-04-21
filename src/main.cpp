@@ -2,6 +2,7 @@
 #include "common.hpp"
 #include "fd.hpp"
 #include "elf.hpp"
+#include "mutator.hpp"
 
 const string RESET  = "\033[0m";
 const string RED    = "\033[31m";
@@ -12,6 +13,17 @@ const string BLUE   = "\033[34m";
 void help() {
     cout << RED << "Usage : " << RESET << "./ELF_corpus_gen <original_elf>" << endl;
     std::exit(1);
+}
+void mutator_1(Mutator& mutator) {
+
+    ELFMut slave = mutator.new_slave()
+                          .mutate_ehdr_ehsize()
+                          .mutate_ehdr_phnum()
+                          .mutate_ehdr_shnum()
+                          .generate();
+
+    mutator.add(slave);
+    
 }
 
 int main(int argc, char** argv)
@@ -25,7 +37,9 @@ int main(int argc, char** argv)
     ELF elf {origin};
     OK("ELF loaded");
 
+    Mutator mutator {elf};
 
+    mutator_1(mutator);
 
     return 0;
 }
