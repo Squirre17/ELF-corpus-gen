@@ -15,7 +15,7 @@ void help() {
     std::exit(1);
 }
 void mutator_1(Mutator& mutator) {
-
+    // BUG: copy constructor error
     ELFMut slave = mutator.new_slave()
                           .mutate_ehdr_ehsize()
                           .mutate_ehdr_phnum()
