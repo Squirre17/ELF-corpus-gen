@@ -17,6 +17,7 @@ class Fd {
 private:
     string name;
     int flags;
+    bool is_opened;
 
 public:
     int fd;
@@ -25,8 +26,12 @@ public:
     ~Fd();
     Fd& open();
     Fd& write(vector<byte> bytes);
-    Fd& write(char* buf, usize len);
+    Fd& write(u8 *buf, usize len);
+    Fd& dump(u8 *buf, usize len);                  /* dump data from buf */
+    
     u32 get_file_size();
+
+    /* flag associated */
     Fd& clean_flags();
     Fd& o_rdonly();
     Fd& o_wronly();

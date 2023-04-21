@@ -52,4 +52,5 @@ using std::vector;
 /* typedef */
 typedef ssize_t usize;
 typedef const char conchar;
+typedef const unsigned char conuchar;
 #endif

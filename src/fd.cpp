@@ -3,6 +3,7 @@
 Fd::Fd(string name) : name(name) {
     self.fd = -1;
     self.flags = 0;
+    self.is_opened = false;
 }
 
 Fd& Fd::clean_flags() {
@@ -11,6 +12,9 @@ Fd& Fd::clean_flags() {
 }
 
 Fd& Fd::open() {
+
+    assert(self.is_opened == false);
+    self.is_opened = true;
 
     self.fd = ::open(self.name.c_str(), self.flags, 0666);
     if (self.fd == -1) {
@@ -24,6 +28,7 @@ Fd& Fd::open() {
 Fd& Fd::write(vector<byte> bytes) {
 
     assert(self.fd != -1);
+    assert(self.is_opened == true);
     
     conchar *__buf = reinterpret_cast<conchar *>(bytes.data());
 
@@ -32,15 +37,26 @@ Fd& Fd::write(vector<byte> bytes) {
     return self;
 }
 
-Fd& Fd::write(char* buf, usize len) {
+Fd& Fd::write(u8 *buf, usize len) {
 
     assert(self.fd != -1);
     
-    conchar *__buf = buf;
+    conuchar *__buf = static_cast<conuchar *>(buf);
 
     ck_write(self.fd, __buf, len, self.name.c_str());
 
     return self;
+}
+
+Fd& Fd::dump(u8 *buf, usize len) {
+
+    self.clean_flags()
+        .o_creat()
+        .o_rdonly()
+        .o_trunc()
+        .open();
+
+    self.write(buf, len);
 }
 
 u32 Fd::get_file_size()
