@@ -18,12 +18,14 @@ int main(int argc, char** argv)
 {
     if(argc != 2) help();
 
+    std::srand(std::time(nullptr));// modify here
+
     string origin {argv[1]};
 
     ELF elf {origin};
     OK("ELF loaded");
 
-    
+
 
     return 0;
 }

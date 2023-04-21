@@ -8,6 +8,12 @@ u16 ELFBase::num_of_sec() {
     return self.ehdr->e_shnum;
 }
 
+/* adjust all hdr */
+void ELFBase::set_hdr() {
+    self.ehdr = reinterpret_cast<Elf64_Ehdr *>(self.buf.ptr);
+    self.phdr = reinterpret_cast<Elf64_Phdr *>(self.buf.ptr + self.ehdr->e_phoff);
+    self.shdr = reinterpret_cast<Elf64_Shdr *>(self.buf.ptr + self.ehdr->e_shoff);
+}
 /* -------------------------------------------------------- */
 ELF::fmap_t::fmap_t(Fd fd, u8* base, usize size) 
     : fd(fd) ,base(base) ,size(size) {}
@@ -32,9 +38,7 @@ ELF::ELF(string name) {
     self.buf.ptr  = (u8 *)base;
     self.buf.size = size;
 
-    self.ehdr = reinterpret_cast<Elf64_Ehdr *>(self.buf.ptr);
-    self.phdr = reinterpret_cast<Elf64_Phdr *>(self.buf.ptr + self.ehdr->e_phoff);
-    self.shdr = reinterpret_cast<Elf64_Shdr *>(self.buf.ptr + self.ehdr->e_shoff);
+    self.set_hdr();
     
 }
 
@@ -56,6 +60,8 @@ ELFSlave::ELFSlave(ELF& origin) {
     self.buf.size = len;
 
     memcpy(self.buf.ptr, origin.buf.ptr, len);
+
+    self.set_hdr();
 }
 
 ELFSlave::~ELFSlave() {

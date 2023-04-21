@@ -14,12 +14,14 @@ pub:
     ELFBase() = default;
     buf_t buf;
 
+    void set_hdr();
+
     u16 num_of_seg();
     u16 num_of_sec();
 
-    Elf64_Ehdr *ehdr;
-    Elf64_Phdr *phdr;
-    Elf64_Shdr *shdr;
+    Elf64_Ehdr *ehdr = NULL;
+    Elf64_Phdr *phdr = NULL;
+    Elf64_Shdr *shdr = NULL;
 };
 
 
