@@ -14,7 +14,7 @@ pub:
     ELFMut&  mutate_ehdr_shentsize();
     ELFMut&  mutate_ehdr_phnum();
     ELFMut&  mutate_ehdr_shnum();
-    ELFMut&& generate();
+    // ELFMut   generate();
 };
 
 

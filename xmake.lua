@@ -5,8 +5,8 @@ target("ELF-corpus-gen")
     
     add_cxxflags("-std=c++17")
     add_cxxflags("-no-pie")
-    add_cxxflags("-fsanitize=address")
-    add_ldflags("-fsanitize=address")
+    -- add_cxxflags("-fsanitize=address")
+    -- add_ldflags("-fsanitize=address")
 
     add_includedirs("inc/common")
     add_includedirs("inc")

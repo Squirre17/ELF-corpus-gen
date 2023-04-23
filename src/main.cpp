@@ -17,13 +17,13 @@ fn help() -> void {
 
 fn mutator_1(Mutator& mutator) -> void {
     // BUG: copy constructor error
-    ELFMut slave = mutator.new_slave()
-                          .mutate_ehdr_ehsize()
-                          .mutate_ehdr_phnum()
-                          .mutate_ehdr_shnum()
-                          .generate();
+    auto ptr = std::make_unique<ELFMut>(mutator.origin);
 
-    mutator.add(std::move(slave));
+    (*ptr).mutate_ehdr_ehsize()
+          .mutate_ehdr_phnum()
+          .mutate_ehdr_shnum();
+
+    mutator.add(std::move(ptr));
     mutator.dumpall();
     
 }

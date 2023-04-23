@@ -1,0 +1,4 @@
+set follow-fork-mode parent
+set context-sections regs disasm code
+set context-source-code-lines 0x20
+

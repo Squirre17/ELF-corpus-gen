@@ -58,18 +58,19 @@ fn Fd::read_to_buf(u8 *buf, usize len) -> Fd& {
     return self;    
 }
 
-Fd& Fd::dump(u8 *buf, usize len) {
+fn Fd::dump(u8 *buf, usize len) -> Fd& {
 
     self.clean_flags()
         .o_creat()
-        .o_rdonly()
+        .o_wronly()
         .o_trunc()
         .open();
 
     self.write_to_file(buf, len);
+    return self;
 }
 
-u32 Fd::get_file_size()
+fn Fd::get_file_size() -> u32
 {
     struct stat st;
     if (stat(self.name.c_str(), &st) < 0)

@@ -164,7 +164,8 @@
 #define ck_write(fd, buf, len, fname) do {                       \
     u32 _len = (len);                                            \
     i32 _res = ::write(fd, buf, _len);                             \
-    if (_res != _len) RPFATAL(_res, "Short write to %s", fname); \
+    if (_res != _len)                                      \
+        RPFATAL(_res, "Short write to %s, %u < %u", fname, _res, _len); \
   } while (0)
 
 #define ck_read(fd, buf, len, fname) do {                         \

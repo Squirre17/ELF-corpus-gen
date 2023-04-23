@@ -8,15 +8,15 @@ class Mutator {
 pub:
 
     ELF& origin;
-    queue<ELFMut> victims;
+    queue<unique_ptr<ELFMut>> victims;
 
     // Mutator() = default;
     Mutator(ELF& origin);
     ~Mutator();
 
-    void add(ELFMut slave);
-    void dumpall();
-    fn new_slave() -> ELFMut;
+    fn add(unique_ptr<ELFMut> slave) -> void;
+    fn dumpall() -> void;
+    // fn new_slave() -> ELFMut;
 
 priv:    
 };

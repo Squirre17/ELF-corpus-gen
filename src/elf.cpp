@@ -74,6 +74,6 @@ ELFSlave::ELFSlave(const ELF& origin) {
 
 ELFSlave::~ELFSlave() {}
 
-ELFSlave::ELFSlave(ELFSlave&& other) {}
+// ELFSlave::ELFSlave(ELFSlave&& other) {}
 
-ELFSlave& ELFSlave::operator=(ELFSlave&& other) {}
+// ELFSlave& ELFSlave::operator=(ELFSlave&& other) {}

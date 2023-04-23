@@ -39,11 +39,11 @@ pub:
     ~ELFSlave();    
 
     /* only permit move oper */
-    ELFSlave(ELFSlave&& other); 
-    ELFSlave& operator=(ELFSlave&& other);
+    // ELFSlave(ELFSlave&& other); 
+    // ELFSlave& operator=(ELFSlave&& other);
 
-    ELFSlave(const ELFSlave& other)            = delete;
-    ELFSlave& operator=(const ELFSlave& other) = delete;
+    // ELFSlave(const ELFSlave& other)            = delete;
+    // ELFSlave& operator=(const ELFSlave& other) = delete;
 priv:
 };
 

@@ -46,6 +46,6 @@ fn ELFMut::mutate_ehdr_shnum() -> ELFMut& {
 }
 
 /* generate ELFmut instance */
-ELFMut&& ELFMut::generate() {
-    return std::move(self);
-}
+// ELFMut ELFMut::generate() {
+//     return self;
+// }
