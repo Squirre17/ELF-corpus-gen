@@ -14,8 +14,10 @@ pub:
 
     void set_hdr();
 
-    u16 num_of_seg();
-    u16 num_of_sec();
+    fn num_of_seg() -> u16;
+    fn num_of_sec() -> u16;
+    fn get_addr_of_shstr() -> u8*;
+    fn get_offset_of_shstr() -> u64;
 
     fn ehdr() -> Elf64_Ehdr*;
     fn phdr() -> Elf64_Phdr*;

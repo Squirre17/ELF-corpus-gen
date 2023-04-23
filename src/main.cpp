@@ -19,7 +19,9 @@ fn mutator_1(Mutator& mutator) -> void {
     // BUG: copy constructor error
     auto ptr = std::make_unique<ELFMut>(mutator.origin);
 
-    (*ptr).mutate_ehdr_ehsize()
+    (*ptr).mutate_fill_char_in_shstr('-')
+          .mutate_each_section()
+          .mutate_ehdr_ehsize()
           .mutate_ehdr_phnum()
           .mutate_ehdr_shnum();
 

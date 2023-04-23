@@ -29,6 +29,19 @@ fn ELFBase::shdr() -> Elf64_Shdr* {
     return reinterpret_cast<Elf64_Shdr *>(self.base.get() + self.ehdr()->e_shoff);
 }
 
+fn ELFBase::get_addr_of_shstr() -> u8* {
+    u16 idx = self.ehdr()->e_shstrndx;
+    Elf64_Shdr *shdrs = self.shdr(); 
+    return reinterpret_cast<u8 *>(self.base.get() + shdrs[idx].sh_offset);
+}
+
+fn ELFBase::get_offset_of_shstr() -> u64 {
+    u16 idx = self.ehdr()->e_shstrndx;
+    Elf64_Shdr *shdrs = self.shdr(); 
+    return reinterpret_cast<u64>(shdrs[idx].sh_offset);
+}
+
+
 ELFBase::~ELFBase() {
     ACT("ELFBase deconstruct called");
 }
@@ -66,8 +79,6 @@ ELFSlave::ELFSlave(const ELF& origin) {
 
     self.base = unique_ptr<u8 []>(new u8[len]);
     self.size = len;
-
-    DBG("len is %d" ,len);
 
     memcpy(self.base.get(), origin.base.get(), len);
 }

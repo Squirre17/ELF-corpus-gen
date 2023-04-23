@@ -31,9 +31,11 @@
 #include <cstddef>
 #include <cstring>
 #include <memory>
+#include <random>
 #include <vector>
 #include <string>
 #include <queue>
+#include <cmath>
 #include <ctime>
 #include <map>
 
