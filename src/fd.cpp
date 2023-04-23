@@ -38,7 +38,7 @@ Fd& Fd::write_to_file(vector<byte> bytes) {
 }
 
 /* write to fd of opened file */
-Fd& Fd::write_to_file(u8 *buf, usize len) {
+fn Fd::write_to_file(u8 *buf, usize len) -> Fd& {
 
     assert(self.fd != -1);
     
@@ -82,27 +82,27 @@ Fd::~Fd() {
 }
 
 /* user guarantee the flag is non-conflict */
-Fd& Fd::o_rdonly() {
+fn Fd::o_rdonly() -> Fd& {
     self.flags |= O_RDONLY;
     return self;
 }
 
-Fd& Fd::o_wronly() {
+fn Fd::o_wronly() -> Fd& {
     self.flags |= O_WRONLY;
     return self;
 }
 
-Fd& Fd::o_creat() {
+fn Fd::o_creat() -> Fd& {
     self.flags |= O_CREAT;
     return self;
 }
 
-Fd& Fd::o_excl() {
+fn Fd::o_excl() -> Fd& {
     self.flags |= O_EXCL;
     return self;
 }
 
-Fd& Fd::o_trunc() {
+fn Fd::o_trunc() -> Fd& {
     self.flags |= O_TRUNC;
     return self;
 }

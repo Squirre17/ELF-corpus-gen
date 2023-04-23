@@ -1,7 +1,7 @@
 #include "mutator.hpp"
 #include "uuid.hpp"
 // make sure here call the copy-construct function
-Mutator::Mutator(ELF& origin) : origin(origin) {}
+Mutator::Mutator(ELF& org) : origin(org) {}
 
 Mutator::~Mutator() {}
 
@@ -19,6 +19,7 @@ fn Mutator::add(ELFMut slave) -> void {
 fn Mutator::dumpall() -> void {
 
     ACT("dumpall start");
+    system("mkdir -p ./corpus");
     
     while (not self.victims.empty()) {
 

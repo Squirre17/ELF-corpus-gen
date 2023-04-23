@@ -14,6 +14,7 @@ fn help() -> void {
     cout << RED << "Usage : " << RESET << "./ELF_corpus_gen <original_elf>" << endl;
     std::exit(1);
 }
+
 fn mutator_1(Mutator& mutator) -> void {
     // BUG: copy constructor error
     ELFMut slave = mutator.new_slave()
@@ -23,6 +24,7 @@ fn mutator_1(Mutator& mutator) -> void {
                           .generate();
 
     mutator.add(std::move(slave));
+    mutator.dumpall();
     
 }
 
