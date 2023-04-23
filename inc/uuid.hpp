@@ -5,6 +5,8 @@
 
 #include "common.hpp" 
 
+namespace uuid {
+
 inline string generate_uuid() {
     
     std::random_device rd;
@@ -16,7 +18,7 @@ inline string generate_uuid() {
     unsigned long long uuid3 = distr(eng);
     unsigned long long uuid4 = distr(eng);
 
-    // format the UUID as a string
+    // format the uuid as a string
     std::stringstream ss;
     ss << std::hex << std::setw(16) << std::setfill('0') << uuid1
        << std::hex << std::setw(16) << std::setfill('0') << uuid2
@@ -24,4 +26,6 @@ inline string generate_uuid() {
        << std::hex << std::setw(16) << std::setfill('0') << uuid4;
 
     return "mut-" + ss.str();
+}
+
 }

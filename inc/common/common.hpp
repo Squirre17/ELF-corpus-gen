@@ -30,6 +30,7 @@
 #include <cstdlib>
 #include <cstddef>
 #include <cstring>
+#include <memory>
 #include <vector>
 #include <string>
 #include <queue>
@@ -44,11 +45,14 @@ using std::string;
 using std::byte;
 using std::vector;
 using std::queue;
+using std::unique_ptr;
+
 
 /* macro */
 #define self (*this)
-#define let auto
-#define pub public
+#define let  auto
+#define fn   auto
+#define pub  public
 #define priv private
 #define prot protected
 

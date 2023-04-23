@@ -5,28 +5,29 @@ Mutator::Mutator(ELF& origin) : origin(origin) {}
 
 Mutator::~Mutator() {}
 
-ELFMut Mutator::new_slave() {
+fn Mutator::new_slave() -> ELFMut {
+    ACT("Mutator::new_slave() start");
     ELFMut slave {self.origin};
     return slave;
 }
 
-void Mutator::add(ELFMut slave) {
-    self.victims.push(slave);
+fn Mutator::add(ELFMut slave) -> void {
+    self.victims.emplace(std::move(slave));
 }
 
 /* dump all */
-void Mutator::dumpall() {
+fn Mutator::dumpall() -> void {
 
-    ACT("dumpall statr");
+    ACT("dumpall start");
     
     while (not self.victims.empty()) {
 
-        let victim = self.victims.front();
+        ELFMut victim = std::move(self.victims.front());
         self.victims.pop();
 
-        string uuid = "corpus/" + generate_uuid();
+        string uuid = "corpus/" + uuid::generate_uuid();
 
         Fd fd {uuid};
-        fd.dump(victim.buf.ptr, victim.buf.size);
+        fd.dump(victim.base.get(), victim.size);
     }
 }

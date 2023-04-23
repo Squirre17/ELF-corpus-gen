@@ -16,7 +16,7 @@ pub:
 
     void add(ELFMut slave);
     void dumpall();
-    ELFMut new_slave();
+    fn new_slave() -> ELFMut;
 
 priv:    
 };

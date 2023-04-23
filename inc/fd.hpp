@@ -25,8 +25,9 @@ public:
     Fd() = default;// TODO
     ~Fd();
     Fd& open();
-    Fd& write(vector<byte> bytes);
-    Fd& write(u8 *buf, usize len);
+    Fd& write_to_file(vector<byte> bytes);
+    Fd& write_to_file(u8 *buf, usize len);
+    Fd& read_to_buf(u8 *buf, usize len);
     Fd& dump(u8 *buf, usize len);                  /* dump data from buf */
     
     u32 get_file_size();

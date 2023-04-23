@@ -25,7 +25,7 @@ Fd& Fd::open() {
     
 }   
 
-Fd& Fd::write(vector<byte> bytes) {
+Fd& Fd::write_to_file(vector<byte> bytes) {
 
     assert(self.fd != -1);
     assert(self.is_opened == true);
@@ -37,7 +37,8 @@ Fd& Fd::write(vector<byte> bytes) {
     return self;
 }
 
-Fd& Fd::write(u8 *buf, usize len) {
+/* write to fd of opened file */
+Fd& Fd::write_to_file(u8 *buf, usize len) {
 
     assert(self.fd != -1);
     
@@ -48,6 +49,15 @@ Fd& Fd::write(u8 *buf, usize len) {
     return self;
 }
 
+fn Fd::read_to_buf(u8 *buf, usize len) -> Fd& {
+
+    assert(self.fd != -1);
+    
+    ck_read(self.fd, buf, len, self.name.c_str());
+
+    return self;    
+}
+
 Fd& Fd::dump(u8 *buf, usize len) {
 
     self.clean_flags()
@@ -56,7 +66,7 @@ Fd& Fd::dump(u8 *buf, usize len) {
         .o_trunc()
         .open();
 
-    self.write(buf, len);
+    self.write_to_file(buf, len);
 }
 
 u32 Fd::get_file_size()

@@ -10,11 +10,11 @@ const string GREEN  = "\033[32m";
 const string YELLOW = "\033[33m";
 const string BLUE   = "\033[34m";
 
-void help() {
+fn help() -> void {
     cout << RED << "Usage : " << RESET << "./ELF_corpus_gen <original_elf>" << endl;
     std::exit(1);
 }
-void mutator_1(Mutator& mutator) {
+fn mutator_1(Mutator& mutator) -> void {
     // BUG: copy constructor error
     ELFMut slave = mutator.new_slave()
                           .mutate_ehdr_ehsize()
@@ -22,11 +22,11 @@ void mutator_1(Mutator& mutator) {
                           .mutate_ehdr_shnum()
                           .generate();
 
-    mutator.add(slave);
+    mutator.add(std::move(slave));
     
 }
 
-int main(int argc, char** argv)
+fn main(int argc, char* argv[]) -> int
 {
     if(argc != 2) help();
 

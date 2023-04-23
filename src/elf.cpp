@@ -2,18 +2,31 @@
 
 
 u16 ELFBase::num_of_seg() {
-    return self.ehdr->e_phnum;
+    return self.ehdr()->e_phnum;
 }
 
 u16 ELFBase::num_of_sec() {
-    return self.ehdr->e_shnum;
+    return self.ehdr()->e_shnum;
 }
 
 /* adjust all hdr */
-void ELFBase::set_hdr() {
-    self.ehdr = reinterpret_cast<Elf64_Ehdr *>(self.buf.ptr);
-    self.phdr = reinterpret_cast<Elf64_Phdr *>(self.buf.ptr + self.ehdr->e_phoff);
-    self.shdr = reinterpret_cast<Elf64_Shdr *>(self.buf.ptr + self.ehdr->e_shoff);
+// void ELFBase::set_hdr() {
+//     self.ehdr = reinterpret_cast<Elf64_Ehdr *>(self.base.get());
+//     self.phdr = reinterpret_cast<Elf64_Phdr *>(self.base.get() + self.ehdr->e_phoff);
+//     self.shdr = reinterpret_cast<Elf64_Shdr *>(self.base.get() + self.ehdr->e_shoff);
+// }
+
+/* overhead is small so not considering optimize here (i.e add a cache)*/
+fn ELFBase::ehdr() -> Elf64_Ehdr* {
+    return reinterpret_cast<Elf64_Ehdr *>(self.base.get());
+}
+
+fn ELFBase::phdr() -> Elf64_Phdr* {
+    return reinterpret_cast<Elf64_Phdr *>(self.base.get() + self.ehdr()->e_phoff);
+}
+
+fn ELFBase::shdr() -> Elf64_Shdr* {
+    return reinterpret_cast<Elf64_Shdr *>(self.base.get() + self.ehdr()->e_shoff);
 }
 
 ELFBase::~ELFBase() {
@@ -21,69 +34,46 @@ ELFBase::~ELFBase() {
 }
 
 /* -------------------------------------------------------- */
-ELF::fmap_t::fmap_t(Fd fd, u8* base, usize size) 
-    : fd(fd) ,base(base) ,size(size) {}
-
 ELF::~ELF(){
     ACT("ELF deconstruct start");
-    if(self.map.base)
-        munmap(self.map.base, self.map.size);
+    if(self.base)
+        munmap(self.base.get(), self.size);
 };
 
 ELF::ELF(string name) {
     ACT("ELF construct start");
 
     Fd fd {name};
-    void* base = nullptr;
-
     fd.o_rdonly().open();
 
-    let size = fd.get_file_size();
+    let __size = fd.get_file_size();
+    unique_ptr<u8 []> ptr(new u8[__size]);
 
-    base = (void *)mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd.fd, 0);
-    if (!base) 
-        PANIC("Failed to map file");
+    fd.read_to_buf(ptr.get(), __size);
 
-    const fmap_t map {fd, (u8 *)base, size};
+    self.base = std::move(ptr);
+    self.size = __size;
 
-    // question : why here map will deconstruct
-    self.map      = std::move(map);
-    /* IMPORTANT : buf and ptr pointer to some area, pay attention to, but only use buf */
-    self.buf.ptr  = (u8 *)base;
-    self.buf.size = size;
-
-    self.set_hdr();
     ACT("EFL construct over");
-}
-
-
-
-ELF::fmap_t::~fmap_t() {
-    ACT("fmap_t() deconstruct start");
-
 }
 
 /* -------------------------------------------------------- */
 
-/* deep copy construction */
-ELFSlave::ELFSlave(ELF& origin) {
+/* deep copy construction */ // TODO: verify
+ELFSlave::ELFSlave(const ELF& origin) {
     
-    let len = origin.buf.size;
+    let len = origin.size;
 
-    self.buf.ptr = new u8[len];
-    self.buf.size = len;
+    self.base = unique_ptr<u8 []>(new u8[len]);
+    self.size = len;
 
     DBG("len is %d" ,len);
 
-    memcpy(self.buf.ptr, origin.buf.ptr, len);
-
-    self.set_hdr();
+    memcpy(self.base.get(), origin.base.get(), len);
 }
 
-ELFSlave::~ELFSlave() {
-    ACT("ELFSlave deconstruct start");
-    if(self.buf.ptr){
-        delete self.buf.ptr;
-        self.buf.ptr = nullptr;
-    }
-}
+ELFSlave::~ELFSlave() {}
+
+ELFSlave::ELFSlave(ELFSlave&& other) {}
+
+ELFSlave& ELFSlave::operator=(ELFSlave&& other) {}
