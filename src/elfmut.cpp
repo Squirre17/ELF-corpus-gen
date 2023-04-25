@@ -53,7 +53,8 @@ fn ELFMut::mutate_ehdr_shentsize() -> ELFMut& {
 fn ELFMut::mutate_ehdr_phnum() -> ELFMut& {
     
     let _ = self.ehdr()->e_phnum;
-    self.ehdr()->e_phnum = random_number(_);
+    // self.ehdr()->e_phnum = random_number(_);
+    self.ehdr()->e_phnum = 0;
     DBG("mutate e_phnum is %d", self.ehdr()->e_phnum);
     
     return self;
@@ -62,7 +63,8 @@ fn ELFMut::mutate_ehdr_phnum() -> ELFMut& {
 fn ELFMut::mutate_ehdr_shnum() -> ELFMut& {
 
     let _ = self.ehdr()->e_shnum;
-    self.ehdr()->e_shnum = random_number(_);
+    // self.ehdr()->e_shnum = random_number(_);
+    self.ehdr()->e_shnum = 0;
     // cout << "DBG : " << static_cast<u32>(std::pow(2 ,sizeof(_))) << endl;
     DBG("mutate e_shnum is %d", self.ehdr()->e_shnum);
 

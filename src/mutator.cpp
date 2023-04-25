@@ -30,6 +30,7 @@ fn Mutator::dumpall() -> void {
         string uuid = "corpus/" + uuid::generate_uuid();
 
         Fd fd {uuid};
+        ACT("dump %s to disk", uuid.c_str());
         fd.dump(victim->base.get(), victim->size);
     }
 }
